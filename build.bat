@@ -2,7 +2,7 @@
 
 set build_options=-DBUILD_WIN32=1
 set compile_flags=-nologo /Zi /FC /EHsc
-set linker_flags = ws2_32.lib -incremental:no -opt:ref /Debug:fastlink
+set linker_flags = -incremental:no -opt:ref /Debug:fastlink
 
 if not exist build mkdir build
 pushd build
