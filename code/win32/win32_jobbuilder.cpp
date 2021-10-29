@@ -3,9 +3,6 @@ Win32ListVirtualMachines(IVirtualBox *virtualBox)
 {
     HRESULT rc;
 
-    /*
-     * First we have to get a list of all registered VMs
-     */
     SAFEARRAY *machinesArray = NULL;
 
     printf("You Have the following VMs:\n");
@@ -36,12 +33,11 @@ Win32ListVirtualMachines(IVirtualBox *virtualBox)
     }
 }
 
-STN_INTERNAL platform_vbox_client
+STN_INTERNAL platform_vbox
 Win32InitializeVirtualBox()
 {
-    platform_vbox_client Result = {};
+    platform_vbox Result = {};
 
-    // IVirtualBoxClient *virtualBoxClient;
     HRESULT rc = CoCreateInstance(CLSID_VirtualBoxClient, /* the VirtualBoxClient object */
                                   NULL,                   /* no aggregation */
                                   CLSCTX_INPROC_SERVER,   /* the object lives in the current process */
@@ -54,11 +50,7 @@ Win32InitializeVirtualBox()
         if (SUCCEEDED(rc))
         {
             printf("Successfully initialized VBox\n");
-            // Win32ListVirtualMachines(virtualBox);
-
-            /* Release the VirtualBox object. */
-            // virtualBox->Release();
-            // virtualBoxClient->Release();
+            Result.Initialized = true;
         }
         else
         {
@@ -71,4 +63,11 @@ Win32InitializeVirtualBox()
     }
 
     return (Result);
+}
+
+STN_INTERNAL void
+Win32FreeVirtualBox(platform_vbox *VBox)
+{
+    VBox->Client->Release();
+    VBox->VBox->Release();
 }

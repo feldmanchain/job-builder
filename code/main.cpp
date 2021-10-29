@@ -32,6 +32,7 @@ InitializePlatform(platform *Platform)
 #ifdef BUILD_WIN32
     Platform->InitVirtualBox = Win32InitializeVirtualBox;
     Platform->ListVirtualMachines = Win32ListVirtualMachines;
+    Platform->FreeVirtualBox = Win32FreeVirtualBox;
 #endif
 }
 
@@ -44,9 +45,9 @@ main(int ArgumentCount, char **Arguments)
     platform Platform = {};
     InitializePlatform(&Platform);
 
-    platform_vbox_client VBoxData = Platform.InitVirtualBox();
+    platform_vbox VBoxData = Platform.InitVirtualBox();
     Platform.ListVirtualMachines(VBoxData.VBox);
-
+    Platform.FreeVirtualBox(&VBoxData);
 
     return 0;
 }

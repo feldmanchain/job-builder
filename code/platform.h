@@ -1,5 +1,6 @@
-struct platform_vbox_client
+struct platform_vbox
 {
+    b32 Initialized;
     IVirtualBoxClient *Client;
     IVirtualBox *VBox;
 };
@@ -8,6 +9,7 @@ struct platform_vbox_client
 // we will fix this in the future.
 struct platform
 {
-    platform_vbox_client (*InitVirtualBox)(void);
+    platform_vbox (*InitVirtualBox)(void);
     void (*ListVirtualMachines)(IVirtualBox*);
+    void (*FreeVirtualBox)(platform_vbox*);
 };
